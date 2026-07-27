@@ -4,12 +4,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
+  const escapeHtml = (value) =>
+    String(value).replace(/[&<>"']/g, (ch) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    })[ch]);
+
+  let messageHideTimeoutId;
+
   function showMessage(text, type) {
     messageDiv.textContent = text;
-    messageDiv.className = type;
-    messageDiv.classList.remove("hidden");
+    messageDiv.classList.remove("success", "error", "info", "hidden");
+    messageDiv.classList.add("message", type);
 
-    setTimeout(() => {
+    if (messageHideTimeoutId) {
+      clearTimeout(messageHideTimeoutId);
+    }
+
+    messageHideTimeoutId = window.setTimeout(() => {
       messageDiv.classList.add("hidden");
     }, 5000);
   }
