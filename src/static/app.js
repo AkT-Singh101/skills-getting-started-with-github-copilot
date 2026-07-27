@@ -49,23 +49,24 @@ document.addEventListener("DOMContentLoaded", () => {
         const spotsLeft = details.max_participants - details.participants.length;
         const participantsMarkup = details.participants.length
           ? details.participants
-              .map(
-                (participant) => `
+              .map((participant) => {
+                const safeParticipant = escapeHtml(participant);
+                return `
                   <li>
-                    <span>${participant}</span>
+                    <span>${safeParticipant}</span>
                     <button
                       type="button"
                       class="participant-remove"
                       data-activity="${encodeURIComponent(name)}"
                       data-email="${encodeURIComponent(participant)}"
-                      aria-label="Remove ${participant}"
+                      aria-label="Remove ${safeParticipant}"
                       title="Unregister participant"
                     >
                       &times;
                     </button>
                   </li>
-                `
-              )
+                `;
+              })
               .join("")
           : '<li class="participant-empty">No one has signed up yet.</li>';
 
